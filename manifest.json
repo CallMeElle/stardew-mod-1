@@ -1,0 +1,10 @@
+{
+    "Name": "stardew-mod1",
+    "Author": "CallMeElle",
+    "Version": "1.0.0",
+    "Description": "My first Stardew Valley Mod",
+    "UniqueID": "CallMeElle.mod1",
+    "EntryDll": "mod1.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": []
+  }
