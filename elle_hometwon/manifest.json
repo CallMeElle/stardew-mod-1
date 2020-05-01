@@ -1,0 +1,10 @@
+{
+    "Name": "hometown",
+    "Author": "CallMeElle",
+    "Version": "1.0.0",
+    "Description": "My first Stardew Valley Mod",
+    "UniqueID": "CallMeElle.hometown",
+    "EntryDll": "hometown.dll",
+    "MinimumApiVersion": "2.10.0",
+    "UpdateKeys": []
+  }

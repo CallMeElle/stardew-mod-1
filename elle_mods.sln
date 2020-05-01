@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stardew-mod1", "stardew-mod1.csproj", "{005EBEA4-AB19-48BE-AF67-0D93B2D5A6D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hometown", "elle_hometwon/hometown.csproj", "{005EBEA4-AB19-48BE-AF67-0D93B2D5A6D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

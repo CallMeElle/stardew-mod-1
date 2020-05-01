@@ -2,9 +2,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>mod1</AssemblyName>
+    <AssemblyName>hometown</AssemblyName>
     <Version>1.0.0</Version>
-    <RootNamespace>CallMeElle.mod1</RootNamespace>
+    <RootNamespace>CallMeElle.hometown</RootNamespace>
     <TargetFramework>net452</TargetFramework>
   </PropertyGroup>
 
