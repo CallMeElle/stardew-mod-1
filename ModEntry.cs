@@ -20,6 +20,16 @@ namespace CallMeElle
             public override void Entry(IModHelper helper)
             {
                 helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+                helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+            }
+            private void OnSaveLoaded(object sender, SaveLoadedEventArgs args)
+            {
+                // get the internal asset key for the map file
+                string mapAssetKey = this.Helper.Content.GetActualAssetKey("assets/parents.tmx", ContentSource.ModFolder);
+
+                // add the location
+                GameLocation location = new GameLocation(mapAssetKey, "Hometown") { IsOutdoors = true, IsFarm = false };
+                Game1.locations.Add(location);
             }
 
 

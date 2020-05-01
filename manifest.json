@@ -6,5 +6,8 @@
     "UniqueID": "CallMeElle.mod1",
     "EntryDll": "mod1.dll",
     "MinimumApiVersion": "2.10.0",
-    "UpdateKeys": []
+    "UpdateKeys": [],
+     "ContentPackFor": {
+      "UniqueID": "hootless.BusLocations"
+   }
   }

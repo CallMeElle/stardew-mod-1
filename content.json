@@ -1,0 +1,8 @@
+﻿{
+    "mapname":"Hometown",
+    "displayname":"Hometown",
+    "destinationX":5,
+    "destinationY":5,
+    "arrivalFacing":2,
+    "ticketPrice":500
+}
