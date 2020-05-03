@@ -8,6 +8,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using xTile.Tiles;
 
 namespace CallMeElle.hometown {
 
@@ -285,6 +286,20 @@ namespace CallMeElle.hometown {
 				}
 			}
 		}
+
+		public void addTilesheet(string tilesheetPath, int width, int hight, string tilesheetName) {
+			// Add the tilesheet.
+			TileSheet tilesheet = new TileSheet(
+			   id: "z_" + tilesheetName, // a unique ID for the tilesheet
+			   map: this.map,
+			   imageSource: tilesheetPath,
+			   sheetSize: new xTile.Dimensions.Size(width, hight), // the tile size of your tilesheet image.
+			   tileSize: new xTile.Dimensions.Size(16, 16) // should always be 16x16 for maps
+			);
+			this.map.AddTileSheet(tilesheet);
+			this.map.LoadTileSheets(Game1.mapDisplayDevice);
+		
+	}
 
 	}
 }
