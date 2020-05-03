@@ -5,6 +5,6 @@
     "Description": "My first Stardew Valley Mod",
     "UniqueID": "CallMeElle.hometown",
     "EntryDll": "hometown.dll",
-    "MinimumApiVersion": "2.10.0",
+    "MinimumApiVersion": "3.5.0",
     "UpdateKeys": []
   }
