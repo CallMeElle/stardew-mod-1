@@ -20,12 +20,14 @@ namespace CallMeElle.hometown {
 			this.Helper = helper;
 
 			string mapAssetKey = this.Helper.Content.GetActualAssetKey("assets/parents.tmx", ContentSource.ModFolder);
+			string tileAssetKey = this.Helper.Content.GetActualAssetKey("assets/Parenthouse.png", ContentSource.ModFolder);
 			IsOutdoors = true;
 			IsFarm = false;
 			this.mapPath.Set(mapAssetKey);
 			this.name.Value = "hometown";
 			reloadMap();
 			loadObjects();
+			this.addTilesheet(tileAssetKey, 16, 16, "Parenthouse");
 		}
 
 		public Hometown() : base() {
