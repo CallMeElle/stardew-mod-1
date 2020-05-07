@@ -20,7 +20,7 @@ namespace CallMeElle.hometown
         {
 			helper.Events.GameLoop.DayEnding += this.BeforeSaved;
 			helper.Events.GameLoop.DayStarted += this.AfterSaved;
-        }
+		}
         
 
 		private void BeforeSaved( object sender, DayEndingEventArgs args) {
