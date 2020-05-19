@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hometown", "elle_hometwon/hometown.csproj", "{005EBEA4-AB19-48BE-AF67-0D93B2D5A6D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hometown", "elle_hometwon\hometown.csproj", "{005EBEA4-AB19-48BE-AF67-0D93B2D5A6D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,7 +14,7 @@ Global
 		{005EBEA4-AB19-48BE-AF67-0D93B2D5A6D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{005EBEA4-AB19-48BE-AF67-0D93B2D5A6D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-    GlobalSection(MonoDevelopProperties) = preSolution
+	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
@@ -22,6 +22,7 @@ Global
 		$0.TextStylePolicy = $2
 		$2.scope = text/x-csharp
 		$2.FileWidth = 80
+		$2.inheritsSet = null
 		$0.CSharpFormattingPolicy = $3
 		$3.scope = text/x-csharp
 		$3.NewLinesForBracesInTypes = False
@@ -47,5 +48,10 @@ Global
 		$4.FileWidth = 80
 		$4.TabsToSpaces = True
 		$4.scope = text/plain
+		$0.TextStylePolicy = $5
+		$5.inheritsSet = null
+		$5.scope = application/json
+		$0.StandardHeader = $6
+		$0.VersionControlPolicy = $7
 	EndGlobalSection
 EndGlobal

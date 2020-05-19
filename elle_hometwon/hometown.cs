@@ -14,6 +14,9 @@ namespace CallMeElle.hometown {
 
 	public class Hometown : StardewValley.GameLocation {
 
+		private int BusPosition_x;
+		private int BusPosition_Y;
+
 		private IModHelper Helper;
 
 		public Hometown( IModHelper helper) : this() {
@@ -25,10 +28,16 @@ namespace CallMeElle.hometown {
 			IsOutdoors = true;
 			IsFarm = false;
 			this.mapPath.Set(mapAssetKey);
-			this.name.Value = "hometown";
+			name.Value = "hometown";
 			reloadMap();
 			loadObjects();
+
 			this.addTilesheet(tileAssetKey, 16, 16, "Parenthouse");
+
+			BusPosition_x = 13;
+			BusPosition_Y = 4;
+
+
 		}
 
 		public Hometown() : base() {
@@ -91,7 +100,12 @@ namespace CallMeElle.hometown {
 			if ( bus != null ) {
 				bus.Reset();
 			} else {
-				bus = new Bus();
+				bus = new Bus {
+					defaultBusDoorPosition_X = BusPosition_x,
+					defaultBusDoorPosition_Y = BusPosition_Y
+				};
+
+				bus.Reset();
 			}
 		}
 

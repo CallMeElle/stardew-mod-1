@@ -34,12 +34,12 @@ namespace CallMeElle.hometown {
 		/// <summary>
 		/// The default tile position of the bus door (lower tile)
 		/// </summary>
-		public const int defaultBusDoorPosition_X = 13;
+		public int defaultBusDoorPosition_X = 7;
 
 		/// <summary>
 		/// The default tile position of the bus door (lower tile)
 		/// </summary>
-		public const int defaultBusDoorPosition_Y = 4;
+		public int defaultBusDoorPosition_Y = 4;
 
 		/// <summary>
 		/// The bus position offset relative to the defaultBusDoorPosition
@@ -49,7 +49,7 @@ namespace CallMeElle.hometown {
 		/// <summary>
 		/// The bus door position offset relative to the defaultBusDoorPosition
 		/// </summary>
-		private Vector2 busDoorPositionOffset = new Vector2(0, 1);
+		private Vector2 busDoorPositionOffset = new Vector2(0, -1f - 0.375f);
 
 		/// <summary>
 		/// The temporary sprite for the bus Door
@@ -97,9 +97,14 @@ namespace CallMeElle.hometown {
 		private Microsoft.Xna.Framework.Rectangle transparentWindowSource = new Microsoft.Xna.Framework.Rectangle(0, 0, 21, 41);
 
 		/// <summary>
+		/// The window offset.
+		/// </summary>
+		private Vector2 windowOffset = new Vector2(0f, 19f);
+
+		/// <summary>
 		/// The pam offset.
 		/// </summary>
-		private Vector2 pamOffset = new Vector2(0f, 2f);
+		private Vector2 driverOffset = new Vector2(0f, 2f);
 
 		public void Reset() {
 			leaving = false;
@@ -112,10 +117,12 @@ namespace CallMeElle.hometown {
 
 			//add bus and bus door
 			busPosition = new Vector2(defaultBusDoorPosition_X + busPositionOffset.X, defaultBusDoorPosition_Y + busPositionOffset.Y);
+			busPosition *= 64f;
+
 			busDoor = new TemporaryAnimatedSprite(
 				textureName: "LooseSprites\\Cursors",
 				sourceRect: new Microsoft.Xna.Framework.Rectangle(288, 1311, 16, 38),
-				position: new Vector2(defaultBusDoorPosition_X + busDoorPositionOffset.X, defaultBusDoorPosition_Y + busDoorPositionOffset.Y) * 64 * 4,
+				position: new Vector2(defaultBusDoorPosition_X + busDoorPositionOffset.X, defaultBusDoorPosition_Y + busDoorPositionOffset.Y) * 64f,
 				flipped: false,
 				alphaFade: 0f,
 				color: Color.White
@@ -128,7 +135,7 @@ namespace CallMeElle.hometown {
 			};
 
 			//Player has not entered by bus
-			if ( Game1.player.getTileY() > defaultBusDoorPosition_Y - 3 && Game1.player.getTileY() < defaultBusDoorPosition_Y + 2 ) {
+			if (!( Game1.player.getTileY() > defaultBusDoorPosition_Y - 3 && Game1.player.getTileY() < defaultBusDoorPosition_Y + 2 )) {
 
 				drivingOff = false;
 				driving_here = false;
@@ -137,10 +144,11 @@ namespace CallMeElle.hometown {
 				Game1.changeMusicTrack("wavy");
 
 			} else { //Player has entered by bus
+				busDoor.sourceRect = new Microsoft.Xna.Framework.Rectangle(368, 1311, 16, 38);
 				Game1.displayFarmer = false;
 				BusArrive();
 			}
-		}
+		}//Reset
 
 		public void BusDriveToValley() {
 			GameLocation world = Game1.currentLocation;
@@ -152,7 +160,7 @@ namespace CallMeElle.hometown {
 			busDoor = new TemporaryAnimatedSprite(
 				textureName: "LooseSprites\\Cursors",
 				sourceRect: new Microsoft.Xna.Framework.Rectangle(288, 1311, 16, 38),
-				position: new Vector2(defaultBusDoorPosition_X + busDoorPositionOffset.X, defaultBusDoorPosition_Y + busDoorPositionOffset.Y) * 64,
+				position: new Vector2(defaultBusDoorPosition_X + busDoorPositionOffset.X, defaultBusDoorPosition_Y + busDoorPositionOffset.Y) * 64f,
 				flipped: false,
 				alphaFade: 0f,
 				color: Color.White
@@ -172,21 +180,25 @@ namespace CallMeElle.hometown {
 			busDoor.paused = false;
 
 			world.playSound("stoneStep");
-		}
+		}//BusDriveToValley
 
 		public void BusArrive() {
 			GameLocation world = Game1.currentLocation;
 
-			busPosition.X = world.map.GetLayer("Back").TileWidth;
-			busPosition.Y = defaultBusDoorPosition_Y;
-			busPosition += busPositionOffset;
+			busPosition.X = world.map.GetLayer("Back").TileWidth * 32f;
+			busPosition.Y = defaultBusDoorPosition_Y * 64f;
+			busPosition += busPositionOffset*64f;
 
-			busDoor.Position = new Vector2(defaultBusDoorPosition_X + busDoorPositionOffset.X, defaultBusDoorPosition_Y + busDoorPositionOffset.Y);
+			busDoor.Position = new Vector2(
+				busPosition.X + ( busDoorPositionOffset.X - busPositionOffset.X ) * 64f,
+				busPosition.Y + ( busDoorPositionOffset.Y - busPositionOffset.Y ) * 64f
+			);
+
 			driving_here = true;
 			drivingOff = false;
 			world.localSound("busDriveOff");
 			busMotion = new Vector2(-6f, 0f);
-		}
+		}//BusArrive
 
 		private void busStartMovingOff( int extraInfo ) {
 			GameLocation world = Game1.currentLocation;
@@ -198,16 +210,19 @@ namespace CallMeElle.hometown {
 				world.localSound("busDriveOff");
 				Game1.changeMusicTrack("none");
 			});
-		}
+		}//busStartMovingOff
 
-		private void doorOpenAfterReturn( int extraInfo ) {
+		private void exitBus( int extraInfo ) {
 			GameLocation world = Game1.currentLocation;
 
 			world.localSound("batFlap");
 			busDoor = new TemporaryAnimatedSprite(
 				textureName: "LooseSprites\\Cursors",
 				sourceRect: new Microsoft.Xna.Framework.Rectangle(288, 1311, 16, 38),
-				position: new Vector2(defaultBusDoorPosition_X + busDoorPositionOffset.X, defaultBusDoorPosition_Y + busDoorPositionOffset.Y) * 4f /*+ new Vector2(16f, 26f) * 4f*/,
+				position: new Vector2(
+					defaultBusDoorPosition_X + busDoorPositionOffset.X, 
+					defaultBusDoorPosition_Y + busDoorPositionOffset.Y
+				) * 64f,
 				flipped: false,
 				alphaFade: 0f,
 				color: Color.White
@@ -215,17 +230,17 @@ namespace CallMeElle.hometown {
 				interval = 999999f,
 				animationLength = 6,
 				holdLastFrame = true,
-				layerDepth = ( busPosition.Y*64f + 192f ) / 10000f + 1E-05f,
+				layerDepth = ( busPosition.Y + 192f ) / 10000f + 1E-05f,
 				scale = 4f
 			};
 
-			Game1.player.Position = new Vector2(defaultBusDoorPosition_X + 1, defaultBusDoorPosition_Y + 1) * 64f;
+			Game1.player.Position = new Vector2(defaultBusDoorPosition_X, defaultBusDoorPosition_Y + 1) * 64f;
 			world.lastTouchActionLocation = Game1.player.getTileLocation();
 			Game1.displayFarmer = true;
 			Game1.player.forceCanMove();
 			Game1.player.faceDirection(2);
 			Game1.changeMusicTrack("wavy");
-		}
+		}//exitBus
 
 		private void busLeftToValley() {
 			Game1.viewport.Y = -100000;
@@ -233,14 +248,14 @@ namespace CallMeElle.hometown {
 			Game1.warpFarmer("BusStop", 12, 10, flip: true);
 			Game1.player.previousLocationName = "Desert";
 			Game1.locationRequest.Location.resetForPlayerEntry();
-		}
+		}//busLeftToValley
 
 		public void update(GameTime time) {
 			GameLocation world = Game1.currentLocation;
 
 			if ( drivingOff && !leaving ) {
 				busMotion.X -= 0.075f;
-				if ( busPosition.X + 8f < 0f ) {
+				if ( busPosition.X + 512f < 0f ) {
 					leaving = true;
 					Game1.globalFadeToBlack(busLeftToValley, 0.01f);
 				}
@@ -250,28 +265,28 @@ namespace CallMeElle.hometown {
 				Game1.player.Position = busDoor.position;
 				Game1.player.freezePause = 100;
 
-				if ( busPosition.X - 17 < 4 ) {
-					busMotion.X = Math.Min(-1f / 64, busMotion.X * ( 0.98f / 64 ));
+				if ( busPosition.X/64f - defaultBusDoorPosition_X + busPositionOffset.X < 4f ) {
+					busMotion.X = Math.Min(-1f, busMotion.X *  0.98f );
 				}
 
-				if ( Math.Abs(busPosition.X - 17) <= Math.Abs(busMotion.X * 1.5f) ) {
-					busPosition.X = 17;
+				if ( Math.Abs(busPosition.X - (defaultBusDoorPosition_X + busPositionOffset.X) * 64f) <= Math.Abs(busMotion.X * 1.5f) ) {
+					busPosition.X = ( defaultBusDoorPosition_X + busPositionOffset.X ) * 64f;
 					busMotion = Vector2.Zero;
 					Game1.globalFadeToBlack(delegate {
 						driving_here = false;
-						busDoor.Position = busPosition * 64 * 4;
+						busDoor.Position = busPosition - busPositionOffset * 64f + busDoorPositionOffset * 64f;
 						busDoor.pingPong = true;
 						busDoor.interval = 70f;
 						busDoor.currentParentTileIndex = 5;
-						busDoor.endFunction = doorOpenAfterReturn;
+						busDoor.endFunction = exitBus;
 						world.localSound("trashcanlid");
 						Game1.globalFadeToClear();
 					});
 				}
 			}
 
-			if ( !busMotion.Equals(Vector2.Zero) ) {
-				busPosition += busMotion / 64f;
+			if ( busMotion != Vector2.Zero ) {
+				busPosition += busMotion;
 				if ( busDoor != null ) {
 					busDoor.Position += busMotion;
 				}
@@ -280,13 +295,13 @@ namespace CallMeElle.hometown {
 			if ( busDoor != null ) {
 				busDoor.update(time);
 			}
-			
-		}
+
+		}//update
 
 		public void draw(SpriteBatch spriteBatch ) {
 			spriteBatch.Draw(
 				texture: Game1.mouseCursors,
-				position: Game1.GlobalToLocal(Game1.viewport, new Vector2((int) busPosition.X * 64f, (int) busPosition.Y * 64f)),
+				position: Game1.GlobalToLocal(Game1.viewport, new Vector2((int) busPosition.X, (int) busPosition.Y)),
 				sourceRectangle: busSource,
 				color: Color.White,
 				rotation: 0f,
@@ -306,8 +321,8 @@ namespace CallMeElle.hometown {
 					Game1.player.blinkTimer = -1000;
 
 					Game1.player.FarmerRenderer.draw(
-						spriteBatch,
-						new FarmerSprite.AnimationFrame(
+						b: spriteBatch,
+						animationFrame: new FarmerSprite.AnimationFrame(
 							117,
 							99999,
 							0,
@@ -315,7 +330,7 @@ namespace CallMeElle.hometown {
 							flip: true),
 						currentFrame: 117,
 						sourceRect: new Microsoft.Xna.Framework.Rectangle(48, 608, 16, 32),
-						position: Game1.GlobalToLocal(new Vector2((int) ( busPosition.X + 4f ), (int) ( busPosition.Y - 8f ) * 64f) + pamOffset * 4f),
+						position: Game1.GlobalToLocal(new Vector2((int) ( busPosition.X + 4f ), (int) ( busPosition.Y - 8f )) + driverOffset * 64f),
 						origin: Vector2.Zero,
 						layerDepth: ( busPosition.Y + 192f + 4f ) / 10000f,
 						overrideColor: Color.White,
@@ -328,7 +343,7 @@ namespace CallMeElle.hometown {
 						texture: Game1.mouseCursors2,
 						position: Game1.GlobalToLocal(
 							Game1.viewport,
-							new Vector2((int) busPosition.X, (int) busPosition.Y - 10f / 64f) * 256f + pamOffset * 4f
+							new Vector2((int) busPosition.X, (int) busPosition.Y) + windowOffset * 4f
 						),
 						sourceRectangle: transparentWindowSource,
 						color: Color.White,
@@ -343,7 +358,7 @@ namespace CallMeElle.hometown {
 						texture: Game1.mouseCursors,
 						position: Game1.GlobalToLocal(
 							Game1.viewport,
-							new Vector2((int) busPosition.X, (int) busPosition.Y) + pamOffset * 4f),
+							new Vector2((int) busPosition.X, (int) busPosition.Y) + driverOffset * 64f),
 						sourceRectangle: pamSource,
 						color: Color.White,
 						rotation: 0f,
@@ -354,6 +369,6 @@ namespace CallMeElle.hometown {
 					);
 				}
 			}
-		}
+		}//draw
 	}
 }
