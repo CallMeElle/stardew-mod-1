@@ -22,7 +22,7 @@ namespace CallMeElle.hometown {
 		public Hometown( IModHelper helper) : this() {
 			this.Helper = helper;
 
-			string mapAssetKey = this.Helper.Content.GetActualAssetKey("assets/parents.tmx", ContentSource.ModFolder);
+			string mapAssetKey = this.Helper.Content.GetActualAssetKey("assets/Hometown.tmx", ContentSource.ModFolder);
 			string tileAssetKey = this.Helper.Content.GetActualAssetKey("assets/Parenthouse.png", ContentSource.ModFolder);
 
 			IsOutdoors = true;
