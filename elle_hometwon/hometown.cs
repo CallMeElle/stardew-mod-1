@@ -128,6 +128,7 @@ namespace CallMeElle.hometown {
 
 		public override void performTouchAction( string fullActionString, Vector2 playerStandingPosition ) {
 			string text = fullActionString.Split(' ')[0];
+
 			if ( text != null && text == "DesertBus" ) {
 				Response[] answerChoices = new Response[2]
 				{
@@ -135,11 +136,19 @@ namespace CallMeElle.hometown {
 					new Response("Not", Game1.content.LoadString("Strings\\Locations:Desert_Return_No"))
 				};
 				createQuestionDialogue(Game1.content.LoadString("Strings\\Locations:Desert_Return_Question"), answerChoices, "DesertBus");
-			} else {
-				base.performTouchAction(fullActionString, playerStandingPosition);
-			}
-		}
 
+                return;
+			}
+
+            if ( text != null && text == "Parenthouse_inside" ) {
+                Game1.warpFarmer("Parenthouse_inside", 35, 63, flip: true);
+
+                return;
+            }
+
+            base.performTouchAction(fullActionString, playerStandingPosition);
+			
+		}
 
 
 		public override void UpdateWhenCurrentLocation( GameTime time ) {

@@ -10,7 +10,8 @@ namespace CallMeElle.hometown
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod{
 
-        private Hometown location;
+        private Hometown hometown;
+        private Parenthouse_inside parents;
 
         /*********
         ** Public methods
@@ -26,30 +27,55 @@ namespace CallMeElle.hometown
         
 
         private void BeforeSaved( object sender, DayEndingEventArgs args) {
-            // add the location
+            // remove the location
 
-            if ( Game1.locations.Contains(location) ) {
-            	Game1.locations.Remove(location);
+            //remove hometown before save
+            if ( Game1.locations.Contains(hometown) ) {
+            	Game1.locations.Remove(hometown);
             	this.Monitor.Log("removed hometown", LogLevel.Info);
             } else {
             	this.Monitor.Log("cannot find hometown", LogLevel.Warn);
             }
 
+            //remove parent(house) before save
+            if ( Game1.locations.Contains(parents) ) {
+                Game1.locations.Remove(parents);
+                this.Monitor.Log("removed parents(house)", LogLevel.Info);
+            } else {
+                this.Monitor.Log("cannot find parents(house)", LogLevel.Warn);
+            }
+
         }
+
+
 
         private void AfterSaved( object sender, DayStartedEventArgs args ) {
             // add the location
 
-            if ( location == null ) {
-            	location = new Hometown(this.Helper);
+            //add hometown after save
+            if ( hometown == null ) {
+            	hometown = new Hometown(this.Helper);
             	this.Monitor.Log("created hometown", LogLevel.Info);
             }
 
-            if( Game1.locations.Contains(location) ) {
+            if( Game1.locations.Contains(hometown) ) {
             	this.Monitor.Log("hometown already added", LogLevel.Error);
             } else {
-            	Game1.locations.Add(location);
+            	Game1.locations.Add(hometown);
             	this.Monitor.Log("added hometown", LogLevel.Info);
+            }
+
+            //add parent(house) after save
+            if ( parents == null ) {
+                parents = new Parenthouse_inside(this.Helper);
+                this.Monitor.Log("created parents(house)", LogLevel.Info);
+            }
+
+            if ( Game1.locations.Contains(parents) ) {
+                this.Monitor.Log("parents(house) already added", LogLevel.Error);
+            } else {
+                Game1.locations.Add(parents);
+                this.Monitor.Log("added parents(house)", LogLevel.Info);
             }
 
         }
